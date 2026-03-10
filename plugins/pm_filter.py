@@ -1,4 +1,3 @@
-# Kanged From @TroJanZheX
 import asyncio
 import re
 from pyrogram import *
@@ -114,13 +113,11 @@ async def give_filter(client,message):
 
 @Client.on_callback_query(filters.regex(r"^next"))
 async def next_page(bot, query):
-    # 1. Safely split the callback data
     try:
         ident, req, key, offset = query.data.split("_")
     except ValueError:
         return await query.answer("Invalid request.", show_alert=True)
     
-    # 2. Safely cast 'req' to int
     try:
         req = int(req)
     except ValueError:
@@ -150,8 +147,6 @@ async def next_page(bot, query):
         return await query.answer("No more files found.", show_alert=True)
         
     settings = await get_settings(query.message.chat.id)
-    
-    # 3. Restored the 'filep' vs 'file' prefix to match your main search handler
     pre = 'filep' if settings.get('file_secure') else 'file'
 
     if settings.get('button'):
@@ -186,7 +181,6 @@ async def next_page(bot, query):
     else:
         off_set = offset - 10
         
-    # 4. Cleaned up pagination math and ensured 'total' is cast to int
     total_pages = math.ceil(int(total) / 10)
     current_page = math.ceil(int(offset) / 10) + 1
     
@@ -554,7 +548,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
             InlineKeyboardButton('⍟  Admin Mod', callback_data='extra')
         ], [
             InlineKeyboardButton('🏘 Hᴏᴍᴇ', callback_data='start'),
-            InlineKeyboardButton('🔐 Cʟᴏsᴇ', callback_data='close_data)
+            InlineKeyboardButton('🔐 Cʟᴏsᴇ', callback_data='close_data')
         ]]
         reply_markup = InlineKeyboardMarkup(buttons)
         await client.edit_message_media(
@@ -794,21 +788,23 @@ async def cb_handler(client: Client, query: CallbackQuery):
             ]
             reply_markup = InlineKeyboardMarkup(buttons)
             await query.message.edit_reply_markup(reply_markup)
-    await query.answer("okda")
+    else:
+        await query.answer("okda")
 
-    async def auto_filter(client, msg, spoll=False):
-        if not spoll:
-            message = msg
-            settings = await get_settings(message.chat.id)
-            if message.text.startswith("/"): return  # ignore commands
-            if re.findall("((^\/|^,|^!|^\.|^[\U0001F600-\U000E007F]).*)", message.text):
-                return
-            if 2 < len(message.text) < 100:
-                search = message.text
-                files, offset, total_results = await get_search_results(search.lower(), offset=0, filter=True)
-                if not files:
-                    if settings["spell_check"]:
-                        return await advantage_spell_chok(msg)
+
+async def auto_filter(client, msg, spoll=False):
+    if not spoll:
+        message = msg
+        settings = await get_settings(message.chat.id)
+        if message.text.startswith("/"): return  # ignore commands
+        if re.findall("((^\/|^,|^!|^\.|^[\U0001F600-\U000E007F]).*)", message.text):
+            return
+        if 2 < len(message.text) < 100:
+            search = message.text
+            files, offset, total_results = await get_search_results(search.lower(), offset=0, filter=True)
+            if not files:
+                if settings.get("spell_check"):
+                    return await advantage_spell_chok(msg)
                 else:
                     return
         else:
@@ -859,14 +855,11 @@ async def cb_handler(client: Client, query: CallbackQuery):
             [InlineKeyboardButton(text="1/1", callback_data="pages")]
         )
 
-    # Standardized Caption without IMDb
     mention = message.from_user.mention if message.from_user else "User"
     cap = f"Hey {mention} 👋🏻 \n\n➤ Title : {search} \n➤ Your Files Ready Now 👇"
 
-    # Send the text message with the file buttons
     perfectok = await message.reply_text(cap, reply_markup=InlineKeyboardMarkup(btn))
     
-    # Auto-delete logic
     if settings.get("auto_delete"):
         await asyncio.sleep(1800)
         await perfectok.delete()
@@ -983,7 +976,6 @@ async def manual_filters(client, message, text=False):
                 break
     else:
         return False
-
 
 
 async def global_filters(client, message, text=False):
