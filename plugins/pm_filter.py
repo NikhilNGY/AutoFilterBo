@@ -139,7 +139,7 @@ async def next_page(bot, query):
         btn = [
             [
                 InlineKeyboardButton(
-                    text=f"🗃️[{get_size(file.file_size)}] {file.file_name}", callback_data=f'files#{file.file_id}'
+                    text=f"[{get_size(file.file_size)}] | {file.file_name}", callback_data=f'files#{file.file_id}'
                 ),
             ]
             for file in files
@@ -510,22 +510,19 @@ async def cb_handler(client: Client, query: CallbackQuery):
         await query.answer("▣ ᴛɪᴘs ▣\n\n★ ᴛʏᴘᴇ ᴄᴏʀʀᴇᴄᴛ sᴘᴇʟʟɪɴɢ (ɢᴏᴏɢʟᴇ)\n\n★ ɪғ ʏᴏᴜ ɴᴏᴛ ɢᴇᴛ ʏᴏᴜʀ ғɪʟᴇ ɪɴ ᴛʜᴇ ʙᴜᴛᴛᴏɴ ᴛʜᴇɴ ᴛʜᴇ ɴᴇxᴛ sᴛᴇᴘ ɪs ᴄʟɪᴄᴋ ɴᴇxᴛ ʙᴜᴛᴛᴏɴ.\n\n★ ᴄᴏɴᴛɪɴᴜᴇ ᴛʜɪs ᴍᴇᴛʜᴏᴅ ᴛᴏ ɢᴇᴛᴛɪɴɢ ʏᴏᴜ ғɪʟᴇ", show_alert=True)    
       
     elif query.data == "start":
-        buttons = [[
-            InlineKeyboardButton('〆 Aᴅᴅ Mᴇ Tᴏ Yᴏᴜʀ Gʀᴏᴜᴘs 〆', url=f'http://t.me/{temp.U_NAME}?startgroup=true')
-            ],[
-            InlineKeyboardButton('• Sᴇᴀʀᴄʜ •', switch_inline_query_current_chat=''),
-            InlineKeyboardButton('• Uᴘᴅᴀᴛᴇ •', url=UPDATE_CHANNEL)
-            ],[
-            InlineKeyboardButton('• Hᴇʟᴘ •', callback_data='help'),
-            InlineKeyboardButton('• Aʙᴏᴜᴛ •', callback_data='about')
-        ]]
+        buttons = [
+                [InlineKeyboardButton('💫 Group', url='http://t.me/Kannada_Filmy_Group'),
+                 InlineKeyboardButton('🤖 Updates', url='https://t.me/Sandalwood_kannada_moviesz')],
+                [InlineKeyboardButton('ℹ️ 𝙷𝚎𝚕𝚙', callback_data='help'),
+                 InlineKeyboardButton('😊 𝙰𝚋𝚘𝚞𝚝', callback_data='about')]
+            ]
         reply_markup = InlineKeyboardMarkup(buttons)
         await query.message.edit_text(
             text=script.START_TXT.format(query.from_user.mention, temp.U_NAME, temp.B_NAME),
             reply_markup=reply_markup,
             parse_mode=enums.ParseMode.HTML
         )
-        await query.answer('Piracy Is Crime')
+        await query.answer('Join: @KR_PICTURE')
     elif query.data == "help":
         buttons = [[
             InlineKeyboardButton('Fɪʟᴛᴇʀs ', callback_data='filter'),
@@ -849,7 +846,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
         )
     elif query.data == "source":
         buttons = [[     
-            InlineKeyboardButton('Rᴇᴘᴏ', url="https://github.com/Mishel-Tg/AutoFilterBot"),
+            InlineKeyboardButton('Rᴇᴘᴏ', url="https://t.me/Nikhil5757h"),
             InlineKeyboardButton('⇌ Bᴀᴄᴋ ⇌', callback_data='about')
         ]]
         reply_markup = InlineKeyboardMarkup(buttons)
@@ -1040,7 +1037,7 @@ async def cb_handler(client: Client, query: CallbackQuery):
                 [
                     InlineKeyboardButton('Aᴜᴛᴏ Dᴇʟᴇᴛᴇ',
                                          callback_data=f'setgs#auto_delete#{settings["auto_delete"]}#{str(grp_id)}'),
-                    InlineKeyboardButton('10 Mins' if settings["auto_delete"] else 'OFF',
+                    InlineKeyboardButton('30 Mins' if settings["auto_delete"] else 'OFF',
                                          callback_data=f'setgs#auto_delete#{settings["auto_delete"]}#{str(grp_id)}')
                 ]
             ]
@@ -1075,7 +1072,7 @@ async def auto_filter(client, msg, spoll=False):
         btn = [
             [
                 InlineKeyboardButton(
-                    text=f"🗃️[{get_size(file.file_size)}] {file.file_name}", callback_data=f'{pre}#{file.file_id}'
+                    text=f"[{get_size(file.file_size)}] | {file.file_name}", callback_data=f'{pre}#{file.file_id}'
                 ),
             ]
             for file in files
@@ -1094,30 +1091,19 @@ async def auto_filter(client, msg, spoll=False):
             ]
             for file in files
         ]
-    btn.insert(0, 
-        [
-            InlineKeyboardButton(f'♻️ {search} ♻️', 'qinfo')
-        ]
-    )
-    btn.insert(1, 
-        [
-            InlineKeyboardButton(f'Mᴏᴠɪᴇ ', 'minfo'),
-            InlineKeyboardButton(f'Tɪᴘs ', 'tinfo'),
-            InlineKeyboardButton(f'Iɴғᴏ ', 'reqinfo')
-        ]
-    )
+    btn.insert(0, [InlineKeyboardButton("•  Bᴀᴄᴋ Uᴘ Cʜᴀɴɴᴇʟ  •", url="https://t.me/KR_PICTURE")])
    
     if offset != "":
         key = f"{message.chat.id}-{message.id}"
         BUTTONS[key] = search
         req = message.from_user.id if message.from_user else 0
         btn.append(
-            [InlineKeyboardButton(text=f"🗓 1/{math.ceil(int(total_results) / 10)}", callback_data="pages"),
+            [InlineKeyboardButton(text=f"1/{math.ceil(int(total_results) / 10)}", callback_data="pages"),
              InlineKeyboardButton(text="Nᴇxᴛ ⇛", callback_data=f"next_{req}_{key}_{offset}")]
         )
     else:
         btn.append(
-            [InlineKeyboardButton(text="🗓 1/1", callback_data="pages")]
+            [InlineKeyboardButton(text="1/1", callback_data="pages")]
         )
     imdb = await get_poster(search, file=(files[0]).file_name) if settings["imdb"] else None
     TEMPLATE = settings['template']
@@ -1154,43 +1140,43 @@ async def auto_filter(client, msg, spoll=False):
             **locals()
         )
     else:
-        cap = f"Hᴇʀᴇ ɪs ᴡʜᴀᴛ ɪ ғᴏᴜɴᴅ ғᴏʀ ʏᴏᴜʀ ϙᴜᴇʀʏ {search}"
+        cap = f"Hey {mention} 👋🏻 \n \n➤ Title : {query} \n➤ Your Files Ready Now 👇"
     if imdb and imdb.get('poster'):
         try:
             mes=await message.reply_photo(photo=imdb.get('poster'), caption=cap[:1024],
                                       reply_markup=InlineKeyboardMarkup(btn))
             if settings["auto_delete"]:
-                await asyncio.sleep(600)
+                await asyncio.sleep(1800)
                 await mes.delete()
                 dai=await message.reply(f"<b>Hey</b> <i>{message.from_user.first_name}</i>\n\n<b>Your Request Has Been Deleted 👍 \n(Due To Avoid Copyrights Issue😌)\n\nIF YOU WANT THAT FILE, REQUEST AGAIN ❤️</b>")
-                await asyncio.sleep(100)
+                await asyncio.sleep(1800)
                 await dai.delete()
         except (MediaEmpty, PhotoInvalidDimensions, WebpageMediaEmpty):
             pic = imdb.get('poster')
             poster = pic.replace('.jpg', "._V1_UX360.jpg")
             sir=await message.reply_photo(photo=poster, caption=cap[:1024], reply_markup=InlineKeyboardMarkup(btn))
             if settings["auto_delete"]:
-                await asyncio.sleep(600)
+                await asyncio.sleep(1800)
                 await sir.delete()
                 dai=await message.reply(f"<b>Hey</b> <i>{message.from_user.first_name}</i>\n\n<b>Your Request Has Been Deleted 👍 \n(Due To Avoid Copyrights Issue😌)\n\nIF YOU WANT THAT FILE, REQUEST AGAIN ❤️</b>")
-                await asyncio.sleep(100)
+                await asyncio.sleep(1800)
                 await dai.delete()
         except Exception as e:
             logger.exception(e)
             andi=await message.reply_text(cap, reply_markup=InlineKeyboardMarkup(btn))
             if settings["auto_delete"]:
-                await asyncio.sleep(600)
+                await asyncio.sleep(1800)
                 await andi.delete()
                 dai=await message.reply(f"<b>Hey</b> <i>{message.from_user.first_name}</i>\n\n<b>Your Request Has Been Deleted 👍 \n(Due To Avoid Copyrights Issue😌)\n\nIF YOU WANT THAT FILE, REQUEST AGAIN ❤️</b>")
-                await asyncio.sleep(100)
+                await asyncio.sleep(1800)
                 await dai.delete()
     else:
         perfectok=await message.reply_text(cap, reply_markup=InlineKeyboardMarkup(btn))
         if settings["auto_delete"]:
-            await asyncio.sleep(600)
+            await asyncio.sleep(1800)
             await perfectok.delete()
             dai=await message.reply(f"<b>Hey</b> <i>{message.from_user.first_name}</i>\n\n<b>Your Request Has Been Deleted 👍 \n(Due To Avoid Copyrights Issue😌)\n\nIF YOU WANT THAT FILE, REQUEST AGAIN ❤️</b>")
-            await asyncio.sleep(100)
+            await asyncio.sleep(1800)
             await dai.delete()
     if spoll:
         await msg.message.delete()
